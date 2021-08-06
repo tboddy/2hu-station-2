@@ -1,0 +1,1 @@
+void spawnBoss1(s16, s16);
