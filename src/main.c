@@ -78,6 +78,7 @@ void updateGame(){
 void loadResources(){
 	VDP_loadFont(font.tileset, DMA);
 	VDP_setPalette(PAL1, font.palette -> data);
+	VDP_setPalette(PAL2, chimata.palette -> data);
 	VDP_setTextPalette(1);
 	VDP_loadTileSet(least.tileset, LEAST_TILE, DMA);
 	VDP_loadTileSet(half.tileset, HALF_TILE, DMA);

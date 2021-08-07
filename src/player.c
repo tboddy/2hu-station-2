@@ -5,6 +5,7 @@
 #include "controls.h"
 #include "background.h"
 #include "bullets.h"
+#include "spellcards.h"
 #include "enemies.h"
 #include "explosion.h"
 #include "player.h"
@@ -17,14 +18,29 @@ void spawnPlayerBullet(){
 	struct bulletSpawner bSpawn = {
 		.pX = pPos.x,
 		.pY = pPos.y,
-		.angle = shotAngle - 64,
-		.player = TRUE,
-		.type = 5,
-		.speed = FIX16(16)
+		.angle = shotAngle,
+		.speed = FIX16(8),
+		.type = 1,
+		.player = TRUE
 	};
-	for(s16 i = 0; i < 3; i++){
-		spawnBullet(bSpawn, eUpdate);
+	// spawnBullet(bSpawn, eUpdate);
+
+
+	bSpawn.ints[0] = 1;
+	void bUpdate(s16 i){
+		if(bullets[i].clock % 15 == 5){
+			bullets[i].angle += bullets[i].bools[0] ? 64 : -64;
+			updateVelocity(i, 1);
+		}
+	}
+	for(s16 i = 0; i < 16; i++){
+		bSpawn.type = bSpawn.ints[0];
+		bSpawn.speed = FIX16(5);
+		bSpawn.bools[0] = TRUE;
+		spawnBullet(bSpawn, bUpdate);
 		bSpawn.angle += 64;
+		bSpawn.ints[0] += 2;
+		if(bSpawn.ints[0] > 10) bSpawn.ints[0] = 1;
 	}
 }
 
@@ -54,62 +70,61 @@ void resetBounds(){
 
 void updateBounds(){
 	if(opens.w && pPos.x > PLAYER_LIMIT_RIGHT_MOVE) nextRoom(1);
-	else if(!opens.w && pPos.x > PLAYER_LIMIT_RIGHT) pPos.x = PLAYER_LIMIT_RIGHT;
 	else if(opens.x && pPos.x < PLAYER_LIMIT_LEFT_MOVE) nextRoom(3);
-	else if(!opens.x && pPos.x < PLAYER_LIMIT_LEFT) pPos.x = PLAYER_LIMIT_LEFT;
 	else if(opens.y && pPos.y < PLAYER_LIMIT_TOP_MOVE) nextRoom(0);
 	else if(!opens.y && pPos.y < PLAYER_LIMIT_TOP) pPos.y = PLAYER_LIMIT_TOP;
 	else if(opens.z && pPos.y > PLAYER_LIMIT_BOTTOM_MOVE) nextRoom(2);
 	else if(!opens.z && pPos.y > PLAYER_LIMIT_BOTTOM){
+		fallSpeed = 0;
 		pPos.y = PLAYER_LIMIT_BOTTOM;
-		grounded = TRUE;
 	}
 }
 
 void blockPlayerCol(s16 i){
-	blockDist.x = fix16Sub(blocks[i].pos.x, pCol.w);
-	blockDist.w = fix16Sub(pCol.x, blocks[i].pos.w);
-	blockDist.y = fix16Sub(blocks[i].pos.y, pCol.z);
-	blockDist.z = fix16Sub(pCol.y, blocks[i].pos.z);
-	// left side of block
-	if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > fix16Add(blockDist.z, C_FIX))
-		if(fix16Sub(blocks[i].pos.x, pCol.x) > 0) pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
-	// right side of block
-	if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z)
-		if(fix16Sub(pCol.w, blocks[i].pos.w) > 0) pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
-	// top side of block
-	if(blockDist.y <= 0 && blockDist.y > fix16Add(blockDist.w, C_FIX) && blockDist.y > blockDist.x){
-		grounded = TRUE;
-		if(fix16Sub(blocks[i].pos.y, pCol.y) > 0) pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
-	}
-	// else grounded = FALSE;
-	// bottom side of block
-	if(blockDist.z <= 0 && blockDist.z > blockDist.w && blockDist.z > blockDist.x)
-		if(fix16Sub(pCol.z, blocks[i].pos.z) > 0) pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
-	updateBounds();
+		blockDist.x = fix16Sub(blocks[i].pos.x, pCol.w);
+		blockDist.w = fix16Sub(pCol.x, blocks[i].pos.w);
+		blockDist.y = fix16Sub(blocks[i].pos.y, pCol.z);
+		blockDist.z = fix16Sub(pCol.y, blocks[i].pos.z);
+
+		// left side of block
+		if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z && fix16Sub(blocks[i].pos.x, pCol.x) > 0)
+			pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
+
+		// right side of block
+		if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z && fix16Sub(pCol.w, blocks[i].pos.w) > 0)
+			pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
+
+		// top side of block
+		if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x && fix16Sub(blocks[i].pos.y, pCol.y) > 0){
+			fallSpeed = 0;
+			pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
+		}
+
+		// bottom side of block
+		if(blockDist.z <= 0 && blockDist.z > blockDist.w && blockDist.z > blockDist.x && fix16Sub(pCol.z, blocks[i].pos.z) > 0)
+			pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
 }
 
 
 // movement
 
 void loadMove(){
-	jumpSpeed = 0;
 	pPos.x = PLAYER_INIT_X;
 	pPos.y = PLAYER_INIT_Y;
-	playerSprite = SPR_addSprite(&chimata, pPos.x, pPos.y, sAttr());
+	playerSprite = SPR_addSprite(&chimata, pPos.x, pPos.y, TILE_ATTR(PAL2, 0, FALSE, FALSE));
 	resetBounds();
 	SPR_setDepth(playerSprite, 4);
 }
 
 void updateJump(){
-	if(grounded){
-		if(controls.b){
-			jumpSpeed = JUMP_SET;
-			grounded = FALSE;
-		}
-	} else {
-		pPos.y = fix16Sub(pPos.y, jumpSpeed);
-		jumpSpeed = fix16Sub(jumpSpeed, JUMP_MOD);
+	if(controls.b && !jumping && fallSpeed == 0){
+		fallSpeed = JUMP_SPEED;
+		jumping = TRUE;
+	} else if(!controls.b && jumping && fallSpeed == 0) jumping = FALSE;
+	pPos.y = fix16Add(pPos.y, fallSpeed);
+	if(fallSpeed < GRAVITY_MAX){
+		fallSpeed = fix16Add(fallSpeed, GRAVITY);
+		if(fallSpeed > GRAVITY_MAX) fallSpeed = GRAVITY_MAX;
 	}
 }
 
@@ -117,6 +132,8 @@ void updateMove(){
 	moveSpeed = 0;
 	if(controls.left || controls.right || controls.up || controls.down){
 		if(controls.left || controls.right){
+		// playerAngle = controls.left ? (controls.up ? 640 : (controls.down ? 384 : 512)) :
+		// 	(controls.right ? (controls.up ? 896 : (controls.down ? 128 : 0)) : (controls.up ? 768 : 256));
 			playerAngle = controls.left ? 512 : 0;
 			moveSpeed = P_SPEED;
 			SPR_setHFlip(playerSprite, controls.left ? 1 : 0);
@@ -154,6 +171,7 @@ void updatePlayer(){
 		updateShot();
 		updateJump();
 		updateMove();
+		updateBounds();
 	}
 }
 

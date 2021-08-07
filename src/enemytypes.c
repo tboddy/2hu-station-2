@@ -33,7 +33,7 @@ void spawnBoss1(s16 x, s16 y){
 	}
 
 	void patternOne(s16 i){
-		if(enemies[i].clock % 15 == 14){
+		if(enemies[i].clock % 30 == 14){
 			struct bulletSpawner bSpawn = {
 				.pX = enemies[i].pos.x,
 				.pY = enemies[i].pos.y,

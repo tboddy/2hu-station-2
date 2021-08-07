@@ -5,7 +5,9 @@ void updateControls(u16 joy, u16 changed, u16 state){
 	if(joy == JOY_1){
 		if(changed){}
 		controls.left = (state & BUTTON_LEFT);
+		controls.leftI = (state & BUTTON_LEFT) ? 1 : 0;
 		controls.right = (state & BUTTON_RIGHT);
+		controls.leftI = (state & BUTTON_RIGHT) ? 1 : 0;
 		controls.up = (state & BUTTON_UP);
 		controls.down = (state & BUTTON_DOWN);
 		controls.a = (state & BUTTON_A);

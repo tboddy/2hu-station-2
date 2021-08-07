@@ -1,6 +1,12 @@
 // blocks
 
-#define BLOCK_TILE_1 64 - 4
+#define BLOCK2_YX 64
+#define BLOCK2_XX 68
+#define BLOCK2_C 72
+#define BLOCK3_X 76
+#define BLOCK4_X 80
+#define BLOCK5_X 84
+#define BLOCK6_X 88
 
 #define BLOCK_CT 128
 #define BLOCK_SZ FIX16(16)
@@ -21,10 +27,10 @@ bool needBlockCancel;
 
 s16 blockTile;
 s16 colPBlocks[COL_BLOCK_CT];
-Vect4D_f16 blockDist;
-Image *blockImg;
+bool blockFlipH, blockFlipV;
 
-void spawnBlock(s16, s16, s16, bool),
+void loadBlocks(),
+	spawnBlock(s16, s16, s16, bool, bool, bool),
 	blockPlayerCollision(s16),
 	updateBlocks(),
 	removeBlocks();
@@ -33,7 +39,7 @@ void spawnBlock(s16, s16, s16, bool),
 // room types
 
 #define ROOM_W 32
-#define ROOM_H 24
+#define ROOM_H GAME_H / 8
 
 #define DOOR_X_START 1
 #define DOOR_X_END ROOM_W - DOOR_X_START - 2
@@ -60,7 +66,7 @@ void loadRoomBorder(bool, bool, bool, bool),
 // ----------------------
 // room movement
 // ----------------------
-struct openStr {bool x, y, w, z};
+struct openStr {bool x, y, w, z; };
 struct openStr opens;
 void *topRoom, *leftRoom, *rightRoom, *bottomRoom;
 

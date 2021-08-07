@@ -15,28 +15,12 @@ void loadFrame(){
 	VDP_loadTileSet(frame4.tileset, FRAME_TILE_4, DMA);
 
 	for(s16 y = 0; y < FRAME_HEIGHT; y++) for(s16 x = 0; x < FRAME_WIDTH; x++){
-		if(y < FRAME_OFF_Y || y > FRAME_OFF_Z){
-			frameTile = y == FRAME_OFF_Y - 1 || y == FRAME_OFF_Z + 1 ? FRAME_TILE_3 : FRAME_TILE_1;
+		if(y < FRAME_OFF_Y){
+			frameTile = FRAME_TILE_1;
 			frameV = y == FRAME_OFF_Y - 1 ? 1 : 0;
 			VDP_setTileMapXY(BG_A, TILE_ATTR_FULL(PAL1, 1, frameV, 0, frameTile), x, y);
 		}
 	}
-	// 	if(y < FRAME_OFF_Y || y > FRAME_OFF_Z || x == FRAME_OFF_X || x == FRAME_OFF_W){
-	// 		frameTile = FRAME_TILE_1;
-	// 		frameV = 0;
-	// 		frameH = 0;
-	// 		if(y >= FRAME_OFF_Y && y <= FRAME_OFF_Z){
-	// 			frameTile = FRAME_TILE_2;
-	// 			if(x == FRAME_OFF_X) frameH = 1;
-	// 		} else if(y == FRAME_OFF_Y - 1 || y == FRAME_OFF_Z + 1){
-	// 			frameTile = FRAME_TILE_3;
-	// 			if(x == FRAME_OFF_X || x == FRAME_OFF_W) frameTile = FRAME_TILE_4;
-	// 			if(y == FRAME_OFF_Y - 1) frameV = 1;
-	// 			if(x == FRAME_OFF_W) frameH = 1;
-	// 		}
-	// 		VDP_setTileMapXY(BG_A, TILE_ATTR_FULL(PAL1, 1, frameV, frameH, frameTile), x, y);
-	// 	}
-	// }
 }
 
 
@@ -58,11 +42,12 @@ void updateLives(){
 
 void loadChrome(){
 	loadFrame();
-	loadScore();
+	// loadScore();
 }
 
 void updateChrome(){
 	updateLives();
+	VDP_showFPS(0);
 }
 
 

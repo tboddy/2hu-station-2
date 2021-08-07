@@ -20,9 +20,9 @@ void loadFrame();
 
 // hud
 
-#define SCORE_X 1
+#define SCORE_X 2
 #define SCORE_Y 1
-#define LIVES_X 30
+#define LIVES_X 29
 #define LIVES_Y 1
 
 s16 chromeLives, livesX, livesY;

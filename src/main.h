@@ -4,7 +4,7 @@
 #define WIN_HEIGHT 224
 
 #define GAME_W 32 * 8
-#define GAME_H 24 * 8
+#define GAME_H 26 * 8
 
 #define COUNT_INT 8
 
@@ -16,7 +16,7 @@
 // frame offset
 
 #define TILE_OFF_X 0
-#define TILE_OFF_Y 3
+#define TILE_OFF_Y 2
 #define SPRITE_OFF_X TILE_OFF_X * 8
 #define SPRITE_OFF_Y TILE_OFF_Y * 8
 

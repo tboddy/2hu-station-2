@@ -37,8 +37,14 @@ void spawnBullet(struct bulletSpawner spawner, void(*updater)){
 			case 2: bulletImg = &bigBlueBullet; break;
 			case 3: bulletImg = &smallRedBullet; break;
 			case 4: bulletImg = &bigRedBullet; break;
-			case 5: bulletImg = &smallWhiteBullet; break;
-			case 6: bulletImg = &bigWhiteBullet; break;
+			case 5: bulletImg = &smallGreenBullet; break;
+			case 6: bulletImg = &bigGreenBullet; break;
+			case 7: bulletImg = &smallPinkBullet; break;
+			case 8: bulletImg = &bigPinkBullet; break;
+			case 9: bulletImg = &smallYellowBullet; break;
+			case 10: bulletImg = &bigYellowBullet; break;
+			case 11: bulletImg = &smallWhiteBullet; break;
+			case 12: bulletImg = &bigWhiteBullet; break;
 		}
 		bullets[i].image = SPR_addSprite(bulletImg, -32, GAME_H + 32, sAttr());
 		if(spawner.type % 2 == 0){

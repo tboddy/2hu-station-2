@@ -31,8 +31,8 @@ void spawnEnemy(struct enemySpawner spawner, void(*updater)){
 		enemies[i].vel.y = spawner.velocityY ? spawner.velocityY : 0;
 		switch(spawner.type){
 			case 1:
-				enemies[i].off = 16;
-				enemyImg = &suika;
+				enemies[i].off = 12;
+				enemyImg = &crescent;
 				break;
 		}
 		enemies[i].image = SPR_addSprite(enemyImg, GAME_W, GAME_H + 64, sAttr());
