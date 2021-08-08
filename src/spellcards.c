@@ -86,7 +86,7 @@ void obsession(){
 	} else if(shooting && shotClock % shotInterval >= 30) shooting = FALSE;
 }
 
-// danmaku free market
+// free market
 void freeMarket(){
 	shotInterval = 60;
 	if(shotClock == 0){
@@ -134,7 +134,7 @@ void rainbowRing(){
 		struct bulletSpawner bSpawn = {
 			.pX = spellVectors[0].x,
 			.pY = spellVectors[0].y,
-			.speed = FIX16(7),
+			.speed = FIX16(6),
 			.ints[0] = spellInts[0],
 			.ints[1] = spellInts[1],
 			.type = 1,
@@ -155,6 +155,34 @@ void rainbowRing(){
 	} else if(shooting && shotClock % shotInterval >= 30) shooting = FALSE;
 }
 
+// bullet dominion
+void bulletDominion(){
+	shotInterval = 90;
+	if(shotClock == 0){
+		spellInts[0] = shotAngle;
+		spellVectors[0].x = pPos.x;
+		spellVectors[0].y = bSpawnY;
+		shooting = TRUE;
+	}
+	if(shotClock % 15 == 0 && shotClock % shotInterval < 30 && shooting){
+		struct bulletSpawner bSpawn = {
+			.pX = spellVectors[0].x,
+			.pY = spellVectors[0].y,
+			.speed = FIX16(6),
+			.angle = spellInts[0],
+			.type = 1,
+			.player = TRUE
+		};
+		void bUpdate(s16 i){
+			
+		}
+		for(s16 i = 0; i < 5; i++){
+			spawnBullet(bSpawn, eUpdate, eSuicide);
+			bSpawn.angle += 205;
+		}
+	} else if(shooting && shotClock % shotInterval >= 30) shooting = FALSE;
+}
+
 
 // main loop
 
@@ -167,7 +195,7 @@ void updateSpellcards(){
 	if(shotClock >= shotInterval && controls.a) shotClock = 0;
 	bSpawnY = fix16Sub(pPos.y, B_SPAWN_MOD);
 
-	rainbowRing();
+	bulletDominion();
 	
 	shotClock++;
 	if(shotClock >= 600) shotClock = shotInterval;
