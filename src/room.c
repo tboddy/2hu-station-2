@@ -64,6 +64,8 @@ void spawnBlock(s16 x, s16 y, s16 type, bool dead, bool flipH, bool flipV){
 	blocks[i].pos.y = FIX16(y * 8);
 	blocks[i].pos.w = fix16Add(blocks[i].pos.x, BLOCK_SZ);
 	blocks[i].pos.z = fix16Add(blocks[i].pos.y, BLOCK_SZ);
+	blocks[i].center.x = fix16Add(blocks[i].pos.x, BLOCK_OFF);
+	blocks[i].center.y = fix16Add(blocks[i].pos.y, BLOCK_OFF);
 	switch(type){
 		case 1: blockTile = BLOCK2_YX; break;
 		case 2: blockTile = BLOCK2_XX; break;

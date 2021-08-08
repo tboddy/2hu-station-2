@@ -16,7 +16,7 @@ void spawnExplosion(Vect2D_f16 pos, bool type){
 		explosions[i].active = TRUE;
 		explosions[i].clock = 0;
 		expImg = type == 1 ? &explosion2 : &explosion;
-		explosions[i].image = SPR_addSprite(expImg, fix16ToInt(pos.x) - EXP_OFF, fix16ToInt(pos.y) + EXP_OFF, sAttr());
+		explosions[i].image = SPR_addSprite(expImg, fix16ToInt(pos.x) - EXP_OFF, fix16ToInt(pos.y) + 4, sAttr());
 		SPR_setDepth(explosions[i].image, 3);
 	}
 }

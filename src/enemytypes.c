@@ -25,8 +25,8 @@ void spawnBoss1(s16 x, s16 y){
 
 	void movement(s16 i){
 		if(enemies[i].clock % 30 == 0){
-			SPR_setHFlip(enemies[i].image, pPos.x > enemies[i].pos.x ? 1 : 0);
-			enemies[i].vel = hone(enemies[i].pos, FIX16(0.5), 8);
+			// SPR_setHFlip(enemies[i].image, pPos.x > enemies[i].pos.x ? 1 : 0);
+			// enemies[i].vel = hone(enemies[i].pos, FIX16(0.5), 8);
 			// enemies[i].vel.x = honeOnPlayer(enemies[i].pos.x, enemies[i].pos.y, FIX16(0.5), 8, TRUE);
 			// enemies[i].vel.y = honeOnPlayer(enemies[i].pos.x, enemies[i].pos.y, FIX16(0.5), 8, FALSE);
 		}
@@ -42,7 +42,7 @@ void spawnBoss1(s16 x, s16 y){
 				.speed = FIX16(2)
 			};
 			for(s16 j = 0; j < 8; j++){
-				spawnBullet(bSpawn, eUpdate);
+				spawnBullet(bSpawn, eUpdate, eSuicide);
 				bSpawn.angle += 128;
 			}
 		}

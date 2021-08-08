@@ -20,6 +20,7 @@ struct block {
 	bool active, dead;
 	s16 type;
 	Vect4D_f16 pos, col;
+	Vect2D_f16 center;
 };
 struct block blocks[BLOCK_CT];
 

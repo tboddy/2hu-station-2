@@ -28,7 +28,7 @@ void spawnPlayerBullet(),
 #define PLAYER_LIMIT_BOTTOM_MOVE FIX16(GAME_H - PLAYER_LIMIT_MOVE_OFFSET)
 
 #define P_SPEED FIX16(2)
-#define JUMP_SPEED FIX16(-4)
+#define JUMP_SPEED FIX16(-4.5)
 
 #define KILL_CLOCK_LIMIT 60
 

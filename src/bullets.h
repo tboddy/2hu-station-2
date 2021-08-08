@@ -20,6 +20,8 @@ struct bulletStruct {
 	s16 ints[COUNT_INT];
 	fix16 fixes[COUNT_INT];
 	void (*updater)(s16);
+	void (*suicide)(s16);
+	Vect2D_f16 vectors[COUNT_INT];
 };
 
 struct bulletSpawner {
@@ -29,6 +31,7 @@ struct bulletSpawner {
 	bool bools[COUNT_INT];
 	s16 ints[COUNT_INT];
 	fix16 fixes[COUNT_INT];
+	Vect2D_f16 vectors[COUNT_INT];
 };
 
 struct bulletStruct bullets[BULLET_COUNT];
@@ -39,7 +42,7 @@ s16 killBulletsClock;
 // spawn
 
 Sprite *bulletImg;
-void spawnBullet(struct bulletSpawner spawner, void(*updater));
+void spawnBullet(struct bulletSpawner spawner, void(*updater), void(*suicide));
 
 
 // collision

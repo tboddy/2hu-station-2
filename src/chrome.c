@@ -27,7 +27,7 @@ void loadFrame(){
 // hud
 
 void loadScore(){
-	VDP_drawText("SCORE 00070350", SCORE_X, SCORE_Y);
+	VDP_drawText("000000", SCORE_X, SCORE_Y);
 }
 
 void updateLives(){
@@ -42,12 +42,12 @@ void updateLives(){
 
 void loadChrome(){
 	loadFrame();
-	// loadScore();
+	loadScore();
 }
 
 void updateChrome(){
 	updateLives();
-	VDP_showFPS(0);
+	// VDP_showFPS(0);
 }
 
 

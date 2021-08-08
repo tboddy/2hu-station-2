@@ -20,6 +20,7 @@ fix16 getDistance(Vect2D_f16 a, Vect2D_f16 b){
 
 u16 sAttr(){ return TILE_ATTR(PAL1, 0, FALSE, FALSE); }
 void eUpdate(s16 i){ if(i){} }
+void eSuicide(s16 i){ if(i){} }
 
 void updateVelocity(s16 i, s16 type){
 	switch(type){
@@ -34,9 +35,9 @@ void updateVelocity(s16 i, s16 type){
 	}
 }
 
-Vect2D_f16 hone(Vect2D_f16 pos, fix16 speed, s16 lerp){
-	hPos.x = pPos.x;
-	hPos.y = pPos.y;
+Vect2D_f16 hone(Vect2D_f16 pos, Vect2D_f16 target, fix16 speed, s16 lerp){
+	hPos.x = target.x;
+	hPos.y = target.y;
 	if(lerp > 0){
 		hPos.x = fix16Add(fix16Sub(hPos.x, FIX16(lerp)), FIX16(random() % (lerp * 2)));
 		hPos.y = fix16Add(fix16Sub(hPos.y, FIX16(lerp)), FIX16(random() % (lerp * 2)));

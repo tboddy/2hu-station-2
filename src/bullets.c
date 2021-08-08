@@ -12,7 +12,7 @@
 
 // spawn
 
-void spawnBullet(struct bulletSpawner spawner, void(*updater)){
+void spawnBullet(struct bulletSpawner spawner, void(*updater), void(*suicide)){
 	s16 i = -1;
 	for(s16 h = 0; h < BULLET_COUNT; h++) if(!bullets[h].active && i == -1) i = h;
 	if(i > -1 && !gameOver){
@@ -23,12 +23,14 @@ void spawnBullet(struct bulletSpawner spawner, void(*updater)){
 		bullets[i].speed = spawner.speed;
 		bullets[i].angle = spawner.angle;
 		bullets[i].updater = updater;
+		bullets[i].suicide = suicide;
 		bullets[i].clock = 0;
 		bullets[i].player = spawner.player;
 		for(s16 j = 0; j < COUNT_INT; j++){
-			bullets[i].ints[j] = spawner.ints[j] ? spawner.ints[j] : 0;
-			bullets[i].fixes[j] = spawner.fixes[j] ? spawner.fixes[j] : 0;
-			bullets[i].bools[j] = spawner.bools[j] ? TRUE : FALSE;
+			bullets[i].ints[j] = spawner.ints[j];
+			bullets[i].fixes[j] = spawner.fixes[j];
+			bullets[i].bools[j] = spawner.bools[j];
+			bullets[i].vectors[j] = spawner.vectors[j];
 		}
 		bullets[i].vel.x = spawner.vX ? spawner.vX : fix16Mul(cosFix16(spawner.angle), spawner.speed);
 		bullets[i].vel.y = spawner.vY ? spawner.vY : fix16Mul(sinFix16(spawner.angle), spawner.speed);
@@ -97,13 +99,13 @@ void clearBullets(){
 
 void blockBulletCol(s16 i){
 	for(s16 j = 0; j < BULLET_COUNT; j++) if(bullets[j].active){
-	// 	if(bullets[j].pos.x <= blocks[i].pos.w &&
-	// 		bullets[j].pos.x >= blocks[i].pos.x &&
-	// 		bullets[j].pos.y <= blocks[i].pos.z &&
-	// 		bullets[j].pos.y >= blocks[i].pos.y){
-	// 		spawnExplosion(bullets[j].pos, 1);
-	// 		destroyBullet(j);
-	// 	}
+		if(bullets[j].pos.x <= blocks[i].pos.w &&
+			bullets[j].pos.x >= blocks[i].pos.x &&
+			bullets[j].pos.y <= blocks[i].pos.z &&
+			bullets[j].pos.y >= blocks[i].pos.y){
+			// spawnExplosion(bullets[j].pos, 1);
+			// destroyBullet(j);
+		}
 	}
 }
 
@@ -125,6 +127,7 @@ void updateBullet(s16 i){
 		bullets[i].pos.y > BULLET_LIMIT_Z ||
 		killBullets && bullets[i].clock % 2 == 0){
 		spawnExplosion(bullets[i].pos, 1);
+		bullets[i].suicide(i);
 		destroyBullet(i);
 	} else if(!bullets[i].player) checkBulletCol(i);
 }

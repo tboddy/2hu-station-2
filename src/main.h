@@ -28,8 +28,9 @@ Vect2D_f16 hPos;
 fix16 getDistance(Vect2D_f16, Vect2D_f16);
 u16 sAttr();
 void eUpdate(s16),
+	eSuicide(s16),
 	updateVelocity(s16, s16);
-Vect2D_f16 hone(Vect2D_f16, fix16, s16);
+Vect2D_f16 hone(Vect2D_f16, Vect2D_f16, fix16, s16);
 
 
 // state
