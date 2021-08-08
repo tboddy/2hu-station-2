@@ -2,9 +2,7 @@
 
 // shooting
 
-#define PLAYER_SHOT_INTERVAL 15
 
-s16 playerShotClock, shotAngle;
 
 void spawnPlayerBullet(),
 	loadShot(),
@@ -15,8 +13,8 @@ void spawnPlayerBullet(),
 // movement
 // ----------------------
 
-#define PLAYER_INIT_X FIX16(4 * 8)
-#define PLAYER_INIT_Y FIX16(GAME_H / 2)
+#define PLAYER_INIT_X FIX16(8 * 10)
+#define PLAYER_INIT_Y FIX16(18 * 8)
 
 #define PLAYER_INIT_LEFT FIX16(-4)
 #define PLAYER_INIT_RIGHT fix16Sub(FIX16(GAME_W), PLAYER_INIT_LEFT)
@@ -62,7 +60,7 @@ void loadMove(),
 #define PLAYER_LIMIT_RIGHT fix16Sub(FIX16(GAME_W), PLAYER_LIMIT_LEFT)
 #define PLAYER_LIMIT_BOTTOM fix16Sub(FIX16(GAME_H), PLAYER_LIMIT_TOP)
 
-#define BLOCK_P_CHECK FIX32(16)
+#define BLOCK_LAST_CHECK FIX16(GAME_W - 16)
 
 struct pHitStruct { bool x, y, w, z; };
 struct pHitStruct pHit;

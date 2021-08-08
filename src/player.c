@@ -12,52 +12,6 @@
 #include "room.h"
 
 
-// shooting
-
-void spawnPlayerBullet(){
-	struct bulletSpawner bSpawn = {
-		.pX = pPos.x,
-		.pY = pPos.y,
-		.angle = shotAngle,
-		.speed = FIX16(8),
-		.type = 1,
-		.player = TRUE
-	};
-	// spawnBullet(bSpawn, eUpdate);
-
-
-	bSpawn.ints[0] = 1;
-	void bUpdate(s16 i){
-		if(bullets[i].clock % 15 == 5){
-			bullets[i].angle += bullets[i].bools[0] ? 64 : -64;
-			updateVelocity(i, 1);
-		}
-	}
-	for(s16 i = 0; i < 16; i++){
-		bSpawn.type = bSpawn.ints[0];
-		bSpawn.speed = FIX16(5);
-		bSpawn.bools[0] = TRUE;
-		spawnBullet(bSpawn, bUpdate);
-		bSpawn.angle += 64;
-		bSpawn.ints[0] += 2;
-		if(bSpawn.ints[0] > 10) bSpawn.ints[0] = 1;
-	}
-}
-
-void loadShot(){
-	shotAngle = 0;
-	playerShotClock = PLAYER_SHOT_INTERVAL;
-}
-
-void updateShot(){
-	if(playerShotClock >= PLAYER_SHOT_INTERVAL && controls.a){
-		playerShotClock = 0;
-		spawnPlayerBullet();
-	}
-	playerShotClock++;
-	if(playerShotClock >= 600) playerShotClock = PLAYER_SHOT_INTERVAL;
-}
-
 
 // collision
 
@@ -81,28 +35,28 @@ void updateBounds(){
 }
 
 void blockPlayerCol(s16 i){
-		blockDist.x = fix16Sub(blocks[i].pos.x, pCol.w);
-		blockDist.w = fix16Sub(pCol.x, blocks[i].pos.w);
-		blockDist.y = fix16Sub(blocks[i].pos.y, pCol.z);
-		blockDist.z = fix16Sub(pCol.y, blocks[i].pos.z);
+	blockDist.x = fix16Sub(blocks[i].pos.x, pCol.w);
+	blockDist.w = fix16Sub(pCol.x, blocks[i].pos.w);
+	blockDist.y = fix16Sub(blocks[i].pos.y, pCol.z);
+	blockDist.z = fix16Sub(pCol.y, blocks[i].pos.z);
 
-		// left side of block
-		if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z && fix16Sub(blocks[i].pos.x, pCol.x) > 0)
-			pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
+	// left side of block
+	if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z && fix16Sub(blocks[i].pos.x, pCol.x) > 0)
+		pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
 
-		// right side of block
-		if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z && fix16Sub(pCol.w, blocks[i].pos.w) > 0)
-			pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
+	// right side of block
+	if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z && fix16Sub(pCol.w, blocks[i].pos.w) > 0)
+		pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
 
-		// top side of block
-		if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x && fix16Sub(blocks[i].pos.y, pCol.y) > 0){
-			fallSpeed = 0;
-			pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
-		}
+	// top side of block
+	if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x && fix16Sub(blocks[i].pos.y, pCol.y) > 0){
+		fallSpeed = 0;
+		pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
+	}
 
-		// bottom side of block
-		if(blockDist.z <= 0 && blockDist.z > blockDist.w && blockDist.z > blockDist.x && fix16Sub(pCol.z, blocks[i].pos.z) > 0)
-			pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
+	// bottom side of block
+	if(blockDist.z <= 0 && blockDist.z > blockDist.w && blockDist.z > blockDist.x && fix16Sub(pCol.z, blocks[i].pos.z) > 0)
+		pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
 }
 
 
@@ -162,13 +116,13 @@ void loadPlayer(){
 	currentLives = 3;
 	currentBombs = 2;
 	loadMove();
-	loadShot();
+	loadSpellcards();
 }
 
 void updatePlayer(){
 	if(killClock > 0) updateDead();
 	else {
-		updateShot();
+		updateSpellcards();
 		updateJump();
 		updateMove();
 		updateBounds();

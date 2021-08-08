@@ -97,13 +97,13 @@ void clearBullets(){
 
 void blockBulletCol(s16 i){
 	for(s16 j = 0; j < BULLET_COUNT; j++) if(bullets[j].active){
-		if(bullets[j].pos.x <= blocks[i].pos.w &&
-			bullets[j].pos.x >= blocks[i].pos.x &&
-			bullets[j].pos.y <= blocks[i].pos.z &&
-			bullets[j].pos.y >= blocks[i].pos.y){
-			spawnExplosion(bullets[j].pos, 1);
-			destroyBullet(j);
-		}
+	// 	if(bullets[j].pos.x <= blocks[i].pos.w &&
+	// 		bullets[j].pos.x >= blocks[i].pos.x &&
+	// 		bullets[j].pos.y <= blocks[i].pos.z &&
+	// 		bullets[j].pos.y >= blocks[i].pos.y){
+	// 		spawnExplosion(bullets[j].pos, 1);
+	// 		destroyBullet(j);
+	// 	}
 	}
 }
 
