@@ -2,7 +2,9 @@
 #include <resources.h>
 
 #include "main.h"
+#include "background.h"
 #include "player.h"
+#include "room.h"
 #include "chrome.h"
 
 
@@ -27,7 +29,7 @@ void loadFrame(){
 // hud
 
 void loadScore(){
-	VDP_drawText("000000", SCORE_X, SCORE_Y);
+	VDP_drawText("0000000", SCORE_X, SCORE_Y);
 }
 
 void updateLives(){
@@ -38,16 +40,41 @@ void updateLives(){
 }
 
 
-// export
+// messaging
+
+void loadMessage(){
+	messageClock = MESSAGE_TIME;
+	messageX = 9;
+	messageY = 14;
+	VDP_drawTextBG(BG_A, "YOUKAI  FOREST", messageX, messageY);
+	    VDP_drawTextBG(BG_A, "start[", messageX + 4, messageY + 2);
+	messageW = 15;
+	messageZ = 3;
+}
+
+void updateMessage(){
+	if(messageClock > 0){
+		messageClock--;
+		if(messageClock <= 0){
+			VDP_clearTextAreaBG(BG_A, messageX, messageY, messageW, messageZ);
+			clearingMessage = TRUE;
+			loadOverlay();
+		}
+	}
+}
+
+
+// main loop
 
 void loadChrome(){
 	loadFrame();
 	loadScore();
+	loadMessage();
+	updateMessage();
 }
 
 void updateChrome(){
 	updateLives();
+	updateMessage();
 	// VDP_showFPS(0);
 }
-
-

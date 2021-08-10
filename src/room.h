@@ -8,16 +8,37 @@
 #define BLOCK5_X 84
 #define BLOCK6_X 88
 
+#define BLOCK_M 4 // LOL
+#define ROCK_BLUE_BOTTOM 88
+#define ROCK_BLUE_TOP ROCK_BLUE_BOTTOM + BLOCK_M
+#define ROCK_BLUE_RIGHT ROCK_BLUE_TOP + BLOCK_M
+#define ROCK_BLUE_LEFT ROCK_BLUE_RIGHT + BLOCK_M
+#define ROCK_BLUE_CORNERX ROCK_BLUE_LEFT + BLOCK_M
+#define ROCK_BLUE_CORNERW ROCK_BLUE_CORNERX + BLOCK_M
+#define ROCK_BLUE_CORNERY ROCK_BLUE_CORNERW + BLOCK_M
+#define ROCK_BLUE_CORNERZ ROCK_BLUE_CORNERY + BLOCK_M
+#define ROCK_BLUE_TOP_LEFT ROCK_BLUE_CORNERZ + BLOCK_M
+#define ROCK_BLUE_TOP_RIGHT ROCK_BLUE_TOP_LEFT + BLOCK_M
+#define ROCK_BLUE_BOTTOM_LEFT ROCK_BLUE_TOP_RIGHT + BLOCK_M
+#define ROCK_BLUE_BOTTOM_RIGHT ROCK_BLUE_BOTTOM_LEFT + BLOCK_M
+#define DOOR_GREEN ROCK_BLUE_BOTTOM_RIGHT + BLOCK_M
+#define ROCK_BLUE_GRASS_MIDDLE DOOR_GREEN + BLOCK_M
+#define ROCK_BLUE_GRASS_LEFT ROCK_BLUE_GRASS_MIDDLE + BLOCK_M
+#define ROCK_BLUE_GRASS_RIGHT ROCK_BLUE_GRASS_LEFT + BLOCK_M
+#define ROCK_BLUE_GRASS_X ROCK_BLUE_GRASS_RIGHT + BLOCK_M
+#define ROCK_BLUE_GRASS_W ROCK_BLUE_GRASS_X + BLOCK_M
+#define LADDER ROCK_BLUE_GRASS_W + BLOCK_M
+
+
 #define BLOCK_CT 128
 #define BLOCK_SZ FIX16(16)
 #define BLOCK_OFF FIX16(8)
 
-#define COL_BLOCK_CT 8
 #define COL_BLOCK_OFF FIX16(6)
 #define C_FIX FIX16(1)
 
 struct block {
-	bool active, dead;
+	bool active, dead, ladder;
 	s16 type;
 	Vect4D_f16 pos, col;
 	Vect2D_f16 center;
@@ -27,11 +48,11 @@ struct block blocks[BLOCK_CT];
 bool needBlockCancel;
 
 s16 blockTile;
-s16 colPBlocks[COL_BLOCK_CT];
 bool blockFlipH, blockFlipV;
 
-void loadBlocks(),
-	spawnBlock(s16, s16, s16, bool, bool, bool),
+Image *blockImg;
+
+void spawnBlock(s16, s16, s16, bool),
 	blockPlayerCollision(s16),
 	updateBlocks(),
 	removeBlocks();
@@ -53,8 +74,8 @@ void loadBlocks(),
 #define PLAYER_DOOR_Y_END FIX16(12 * 8 - 4)
 
 
-#define BLOCK_WIDTH ROOM_W / 2 - 2
-#define BLOCK_HEIGHT ROOM_H / 2 - 2
+#define BLOCK_WIDTH ROOM_W / 2
+#define BLOCK_HEIGHT ROOM_H / 2
 
 s16 roomLayout[BLOCK_HEIGHT][BLOCK_WIDTH];
 s16 currentRoomType;
@@ -64,23 +85,18 @@ void loadRoomBorder(bool, bool, bool, bool),
 	loadRoomTop();
 
 
-// ----------------------
 // room movement
-// ----------------------
+
 struct openStr {bool x, y, w, z; };
 struct openStr opens;
 void *topRoom, *leftRoom, *rightRoom, *bottomRoom;
+s16 changingRoom;
 
 s16 roomEnemyX, roomEnemyY;
 
-void nextRoom(s16);
+void nextRoom(s16),
+	nextRoomPos();
 void (*changeRoom)();
-
-
-// ----------------------
-// rooms
-// ----------------------
-void a1(), a2(), a3(), a4(), a5(), a6(), a7(), a8(), a9();
 
 
 // ----------------------

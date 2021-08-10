@@ -32,8 +32,13 @@ void spawnBullet(struct bulletSpawner spawner, void(*updater), void(*suicide)){
 			bullets[i].bools[j] = spawner.bools[j];
 			bullets[i].vectors[j] = spawner.vectors[j];
 		}
-		bullets[i].vel.x = spawner.vX ? spawner.vX : fix16Mul(cosFix16(spawner.angle), spawner.speed);
-		bullets[i].vel.y = spawner.vY ? spawner.vY : fix16Mul(sinFix16(spawner.angle), spawner.speed);
+		if(spawner.vel.x != 0 || spawner.vel.y != 0){
+			bullets[i].vel.x = spawner.vel.x;
+			bullets[i].vel.y = spawner.vel.y;
+		} else {
+			bullets[i].vel.x = fix16Mul(cosFix16(spawner.angle), spawner.speed);
+			bullets[i].vel.y = fix16Mul(sinFix16(spawner.angle), spawner.speed);
+		}
 		switch(spawner.type){
 			case 1: bulletImg = &smallBlueBullet; break;
 			case 2: bulletImg = &bigBlueBullet; break;
@@ -103,8 +108,8 @@ void blockBulletCol(s16 i){
 			bullets[j].pos.x >= blocks[i].pos.x &&
 			bullets[j].pos.y <= blocks[i].pos.z &&
 			bullets[j].pos.y >= blocks[i].pos.y){
-			// spawnExplosion(bullets[j].pos, 1);
-			// destroyBullet(j);
+			spawnExplosion(bullets[j].pos, 1);
+			destroyBullet(j);
 		}
 	}
 }

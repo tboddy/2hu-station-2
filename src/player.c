@@ -28,10 +28,7 @@ void updateBounds(){
 	else if(opens.y && pPos.y < PLAYER_LIMIT_TOP_MOVE) nextRoom(0);
 	else if(!opens.y && pPos.y < PLAYER_LIMIT_TOP) pPos.y = PLAYER_LIMIT_TOP;
 	else if(opens.z && pPos.y > PLAYER_LIMIT_BOTTOM_MOVE) nextRoom(2);
-	else if(!opens.z && pPos.y > PLAYER_LIMIT_BOTTOM){
-		fallSpeed = 0;
-		pPos.y = PLAYER_LIMIT_BOTTOM;
-	}
+	else if(!opens.z && pPos.y > PLAYER_LIMIT_BOTTOM) pPos.y = PLAYER_LIMIT_BOTTOM;
 }
 
 void blockPlayerCol(s16 i){
@@ -41,22 +38,34 @@ void blockPlayerCol(s16 i){
 	blockDist.z = fix16Sub(pCol.y, blocks[i].pos.z);
 
 	// left side of block
-	if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z && fix16Sub(blocks[i].pos.x, pCol.x) > 0)
-		pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
+	if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z){
+		if(blockDist.x < 0) pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
+	}
 
 	// right side of block
-	if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z && fix16Sub(pCol.w, blocks[i].pos.w) > 0)
-		pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
+	if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z){
+		if(blockDist.w < 0) pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
+	}
 
 	// top side of block
-	if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x && fix16Sub(blocks[i].pos.y, pCol.y) > 0){
+	if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x){
 		fallSpeed = 0;
+		falling = FALSE;
 		pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
 	}
 
 	// bottom side of block
-	if(blockDist.z <= 0 && blockDist.z > blockDist.w && blockDist.z > blockDist.x && fix16Sub(pCol.z, blocks[i].pos.z) > 0)
+	if(blockDist.z <= BLOCK_Z_FIX && blockDist.z > blockDist.w && blockDist.z > blockDist.x){
+		fallSpeed = GRAVITY_MIN;
 		pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
+	}
+}
+
+void ladderCol(s16 i){
+	if(!controls.b && (pCol.x <= fix16Sub(blocks[i].pos.w, LADDER_OFF_X) && pCol.w >= fix16Add(blocks[i].pos.x, LADDER_OFF_X) &&
+		pCol.y <= fix16Sub(blocks[i].pos.z, LADDER_OFF_Z) && pCol.z >= fix16Add(blocks[i].pos.y, LADDER_OFF_Y))){
+		onLadder = TRUE;
+	}
 }
 
 
@@ -71,9 +80,12 @@ void loadMove(){
 }
 
 void updateJump(){
+	if(falling) SPR_setFrame(playerSprite, fallSpeed > FIX16(1.25) ? 0 : 1);
 	if(controls.b && !jumping && fallSpeed == 0){
 		fallSpeed = JUMP_SPEED;
 		jumping = TRUE;
+		falling = TRUE;
+		SPR_setAnim(playerSprite, 1);
 	} else if(!controls.b && jumping && fallSpeed == 0) jumping = FALSE;
 	pPos.y = fix16Add(pPos.y, fallSpeed);
 	if(fallSpeed < GRAVITY_MAX){
@@ -82,24 +94,62 @@ void updateJump(){
 	}
 }
 
+void updateLadder(){
+	fallSpeed = 0;
+	jumping = FALSE;
+	falling = TRUE;
+	if(controls.b && !jumping){
+		fallSpeed = JUMP_SPEED;
+		jumping = TRUE;
+		falling = TRUE;
+		onLadder = FALSE;
+		SPR_setAnim(playerSprite, 1);
+	}
+	SPR_setAnim(playerSprite, 0);
+}
+
+void updateParallax(){
+	if(pPos.x < lastX){
+		pScroll1 = FIX16(0.03);
+		pScroll2 = FIX16(0.06);
+	} else if(pPos.x > lastX){
+		pScroll1 = FIX16(-0.03);
+		pScroll2 = FIX16(-0.06);
+	} else {
+		pScroll1 = 0;
+		pScroll2 = 0;
+	}
+	lastX = pPos.x;
+}
+
 void updateMove(){
 	moveSpeed = 0;
 	if(controls.left || controls.right || controls.up || controls.down){
-		if(controls.left || controls.right){
-		// playerAngle = controls.left ? (controls.up ? 640 : (controls.down ? 384 : 512)) :
-		// 	(controls.right ? (controls.up ? 896 : (controls.down ? 128 : 0)) : (controls.up ? 768 : 256));
+		if(onLadder){
+			playerAngle = controls.left ? (controls.up ? 640 : (controls.down ? 384 : 512)) :
+				(controls.right ? (controls.up ? 896 : (controls.down ? 128 : 0)) : (controls.up ? 768 : 256));
+			moveSpeed = P_SPEED;
+			SPR_setHFlip(playerSprite, controls.left ? 1 : 0);
+		} else if(controls.left || controls.right){
 			playerAngle = controls.left ? 512 : 0;
+			if(!falling){
+				SPR_setAnim(playerSprite, 1);
+				if(moveClock % 5 == 0) SPR_nextFrame(playerSprite);
+			}
 			moveSpeed = P_SPEED;
 			SPR_setHFlip(playerSprite, controls.left ? 1 : 0);
 		}
 		shotAngle = controls.left ? (controls.up ? 640 : (controls.down ? 384 : 512)) :
 			(controls.right ? (controls.up ? 896 : (controls.down ? 128 : 0)) : (controls.up ? 768 : 256));
-	}
+	} else if(!falling) SPR_setAnim(playerSprite, 0);
 	if(moveSpeed > 0){
 		pPos.x = fix16Add(pPos.x, fix16Mul(cosFix16(playerAngle), moveSpeed));
 		pPos.y = fix16Add(pPos.y, fix16Mul(sinFix16(playerAngle), moveSpeed));
-	}
+		moveClock++;
+		if(moveClock >= 600) moveClock = 0;
+	} else moveClock = 0;
 	resetBounds();
+	updateParallax();
 	playerMoveClock++;
 	if(playerMoveClock >= 6000) playerMoveClock = 60;
 }
@@ -123,7 +173,7 @@ void updatePlayer(){
 	if(killClock > 0) updateDead();
 	else {
 		updateSpellcards();
-		updateJump();
+		onLadder ? updateLadder() : updateJump();
 		updateMove();
 		updateBounds();
 	}

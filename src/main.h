@@ -11,6 +11,7 @@
 #define LEAST_TILE 4
 #define HALF_TILE 5
 #define MOST_TILE 6
+#define FULL_TILE 7
 
 
 // frame offset

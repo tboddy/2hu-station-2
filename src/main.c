@@ -84,6 +84,7 @@ void loadResources(){
 	VDP_loadTileSet(least.tileset, LEAST_TILE, DMA);
 	VDP_loadTileSet(half.tileset, HALF_TILE, DMA);
 	VDP_loadTileSet(most.tileset, MOST_TILE, DMA);
+	VDP_loadTileSet(full.tileset, FULL_TILE, DMA);
 }
 
 int main() {

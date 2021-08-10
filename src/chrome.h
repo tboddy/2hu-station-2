@@ -31,6 +31,17 @@ void loadScore(),
 	updateLives();
 
 
+// messaging
+
+#define MESSAGE_TIME 120
+
+s16 messageX, messageY, messageW, messageZ,
+	messageClock;
+bool clearingMessage;
+void loadMessage(),
+	updateMessage();
+
+
 // export
 
 void loadChrome(),

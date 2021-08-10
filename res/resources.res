@@ -3,6 +3,7 @@ IMAGE font "font.png" BEST NONE
 IMAGE least "least.png" FAST
 IMAGE half "half.png" FAST
 IMAGE most "most.png" FAST
+IMAGE full "full.png" FAST
 
 IMAGE frame1 "chrome/frame1.png" FAST
 IMAGE frame2 "chrome/frame2.png" FAST
@@ -10,38 +11,54 @@ IMAGE frame3 "chrome/frame3.png" FAST
 IMAGE frame4 "chrome/frame4.png" FAST
 
 IMAGE ground1 "bg/ground1.png" FAST
+IMAGE ray3 "bg/ray3.png" FAST
+IMAGE ray4 "bg/ray4.png" FAST
+IMAGE trees "bg/trees.png" FAST
+IMAGE treesBottom "bg/treesbottom.png" FAST
+IMAGE mountains "bg/mountains.png" FAST
 
 IMAGE blockBlack "room/black.png" FAST
 
-IMAGE block2yx "room/block2yx.png" FAST
-IMAGE block2yw "room/block2yw.png" FAST
-IMAGE block2yy "room/block2yy.png" FAST
-IMAGE block2yz "room/block2yz.png" FAST
-IMAGE block2xw "room/block2xw.png" FAST
-IMAGE block2xz "room/block2xz.png" FAST
-IMAGE block2c "room/block2c.png" FAST
+IMAGE rockBlueBottom "blocks/rock-blue-bottom.png"
+IMAGE rockBlueBottomLeft "blocks/rock-blue-bottomleft.png"
+IMAGE rockBlueBottomRight "blocks/rock-blue-bottomright.png"
+IMAGE rockBlueTop "blocks/rock-blue-top.png"
+IMAGE rockBlueTopLeft "blocks/rock-blue-topleft.png"
+IMAGE rockBlueTopRight "blocks/rock-blue-topright.png"
+IMAGE rockBlueLeft "blocks/rock-blue-left.png"
+IMAGE rockBlueRight "blocks/rock-blue-right.png"
 
-IMAGE block3x "room/block3x.png" FAST
-IMAGE block3w "room/block3w.png" FAST
-IMAGE block3y "room/block3y.png" FAST
-IMAGE block3z "room/block3z.png" FAST
+IMAGE rockBlueCornerX "blocks/rock-blue-cornerx.png"
+IMAGE rockBlueCornerW "blocks/rock-blue-cornerw.png"
+IMAGE rockBlueCornerY "blocks/rock-blue-cornery.png"
+IMAGE rockBlueCornerZ "blocks/rock-blue-cornerz.png"
 
-IMAGE block4x "room/block4x.png" FAST
-IMAGE block4w "room/block4w.png" FAST
-IMAGE block4y "room/block4y.png" FAST
-IMAGE block4z "room/block4z.png" FAST
+IMAGE rockBlueGrassMiddle "blocks/rock-blue-grassmiddle.png"
+IMAGE rockBlueGrassLeft "blocks/rock-blue-grassleft.png"
+IMAGE rockBlueGrassRight "blocks/rock-blue-grassright.png"
+IMAGE rockBlueGrassX "blocks/rock-blue-grassx.png"
+IMAGE rockBlueGrassW "blocks/rock-blue-grassw.png"
 
-IMAGE block5x "room/block5x.png" FAST
-IMAGE block5w "room/block5w.png" FAST
-IMAGE block5y "room/block5y.png" FAST
-IMAGE block5z "room/block5z.png" FAST
+IMAGE rockRedBottom "blocks/rock-red-bottom.png"
+IMAGE rockRedBottomLeft "blocks/rock-red-bottomleft.png"
+IMAGE rockRedBottomRight "blocks/rock-red-bottomright.png"
+IMAGE rockRedTop "blocks/rock-red-top.png"
+IMAGE rockRedTopLeft "blocks/rock-red-topleft.png"
+IMAGE rockRedTopRight "blocks/rock-red-topright.png"
+IMAGE rockRedLeft "blocks/rock-red-left.png"
+IMAGE rockRedRight "blocks/rock-red-right.png"
 
-IMAGE block6x "room/block6x.png" FAST
-IMAGE block6w "room/block6w.png" FAST
-IMAGE block6y "room/block6y.png" FAST
-IMAGE block6z "room/block6z.png" FAST
+IMAGE rockRedCornerX "blocks/rock-red-cornerx.png"
+IMAGE rockRedCornerW "blocks/rock-red-cornerw.png"
+IMAGE rockRedCornerY "blocks/rock-red-cornery.png"
+IMAGE rockRedCornerZ "blocks/rock-red-cornerz.png"
 
-SPRITE chimata "player/chimata.png" 3 6 FAST
+IMAGE doorBlue "blocks/door-blue.png"
+IMAGE doorGreen "blocks/door-green.png"
+
+IMAGE ladder "blocks/ladder.png"
+
+SPRITE chimata "player/chimata.png" 4 6 FAST 0
 
 SPRITE explosion "explosion.png" 3 3 FAST 3
 SPRITE explosion2 "explosion2.png" 3 3 FAST 3

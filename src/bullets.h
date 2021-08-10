@@ -31,7 +31,7 @@ struct bulletSpawner {
 	bool bools[COUNT_INT];
 	s16 ints[COUNT_INT];
 	fix16 fixes[COUNT_INT];
-	Vect2D_f16 vectors[COUNT_INT];
+	Vect2D_f16 vectors[COUNT_INT], vel;
 };
 
 struct bulletStruct bullets[BULLET_COUNT];
