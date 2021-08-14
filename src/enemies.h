@@ -5,8 +5,9 @@
 struct enemy {
 	bool active;
 	bool bools[COUNT_INT];
-	s16 clock, angle, off, type;
+	s16 clock, angle, off, type, health;
 	s16 ints[COUNT_INT];
+	Vect2D_f16 vectors[COUNT_INT];
 	Vect2D_f16 pos, vel;
 	fix16 speed;
 	fix16 fixes[COUNT_INT];
@@ -18,8 +19,9 @@ struct enemy {
 struct enemySpawner {
 	bool hFlip, vFlip;
 	bool bools[COUNT_INT];
-	s16 type, angle;
+	s16 type, angle, health;
 	s16 ints[COUNT_INT];
+	Vect2D_f16 vectors[COUNT_INT];
 	fix16 x, y, speed, velocityX, velocityY;
 	fix16 fixes[COUNT_INT];
 };

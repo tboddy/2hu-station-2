@@ -1,1 +1,1 @@
-void spawnBoss1(s16, s16);
+void weak1(s16, s16);

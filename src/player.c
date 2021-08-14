@@ -39,30 +39,30 @@ void blockPlayerCol(s16 i){
 
 	// left side of block
 	if(blockDist.x <= 0 && blockDist.x > blockDist.y && blockDist.x > blockDist.z){
-		if(blockDist.x < 0) pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X);
+		pPos.x = fix16Sub(blocks[i].pos.x, P_COL_OFF_X_WALL);
 	}
 
 	// right side of block
 	if(blockDist.w <= 0 && blockDist.w > blockDist.y && blockDist.w > blockDist.z){
-		if(blockDist.w < 0) pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X);
+		pPos.x = fix16Add(blocks[i].pos.w, P_COL_OFF_X_WALL);
 	}
 
 	// top side of block
-	if(blockDist.y <= 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x){
+	if(blockDist.y < 0 && blockDist.y > blockDist.w && blockDist.y > blockDist.x){
 		fallSpeed = 0;
 		falling = FALSE;
-		pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y);
+		pPos.y = fix16Sub(blocks[i].pos.y, P_COL_OFF_Y_WALL);
 	}
 
 	// bottom side of block
-	if(blockDist.z <= BLOCK_Z_FIX && blockDist.z > blockDist.w && blockDist.z > blockDist.x){
+	if(blockDist.z <= (onLadder ? 0 : BLOCK_Z_FIX) && blockDist.z > blockDist.w && blockDist.z > blockDist.x){
 		fallSpeed = GRAVITY_MIN;
-		pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y);
+		pPos.y = fix16Add(blocks[i].pos.z, P_COL_OFF_Y_WALL);
 	}
 }
 
 void ladderCol(s16 i){
-	if(!controls.b && (pCol.x <= fix16Sub(blocks[i].pos.w, LADDER_OFF_X) && pCol.w >= fix16Add(blocks[i].pos.x, LADDER_OFF_X) &&
+	if((pCol.x <= fix16Sub(blocks[i].pos.w, LADDER_OFF_X) && pCol.w >= fix16Add(blocks[i].pos.x, LADDER_OFF_X) &&
 		pCol.y <= fix16Sub(blocks[i].pos.z, LADDER_OFF_Z) && pCol.z >= fix16Add(blocks[i].pos.y, LADDER_OFF_Y))){
 		onLadder = TRUE;
 	}
@@ -128,13 +128,13 @@ void updateMove(){
 		if(onLadder){
 			playerAngle = controls.left ? (controls.up ? 640 : (controls.down ? 384 : 512)) :
 				(controls.right ? (controls.up ? 896 : (controls.down ? 128 : 0)) : (controls.up ? 768 : 256));
-			moveSpeed = P_SPEED;
+			moveSpeed = L_SPEED;
 			SPR_setHFlip(playerSprite, controls.left ? 1 : 0);
 		} else if(controls.left || controls.right){
 			playerAngle = controls.left ? 512 : 0;
 			if(!falling){
 				SPR_setAnim(playerSprite, 1);
-				if(moveClock % 5 == 0) SPR_nextFrame(playerSprite);
+				if(moveClock % 10 == 0) SPR_nextFrame(playerSprite);
 			}
 			moveSpeed = P_SPEED;
 			SPR_setHFlip(playerSprite, controls.left ? 1 : 0);

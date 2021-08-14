@@ -28,6 +28,8 @@
 #define ROCK_BLUE_GRASS_X ROCK_BLUE_GRASS_RIGHT + BLOCK_M
 #define ROCK_BLUE_GRASS_W ROCK_BLUE_GRASS_X + BLOCK_M
 #define LADDER ROCK_BLUE_GRASS_W + BLOCK_M
+#define LADDER_TOP LADDER + BLOCK_M
+#define LADDER_BOTTOM LADDER_TOP + BLOCK_M
 
 
 #define BLOCK_CT 128
@@ -39,7 +41,7 @@
 
 struct block {
 	bool active, dead, ladder;
-	s16 type;
+	s16 type, trigger;
 	Vect4D_f16 pos, col;
 	Vect2D_f16 center;
 };

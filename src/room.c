@@ -108,8 +108,17 @@ void spawnBlock(s16 x, s16 y, s16 type, bool dead){
 			blockImg = &ladder;
 			blockTile = LADDER;
 			break;
+		case 31:
+			blockImg = &ladderTop;
+			blockTile = LADDER_TOP;
+			break;
+		case 32:
+			blockImg = &ladderBottom;
+			blockTile = LADDER_BOTTOM;
+			break;
 	}
-	blocks[i].ladder = type == 30;
+	blocks[i].ladder = type == 30 || type == 31 || type == 32;
+	// blocks[i].trigger = random() % 4;
 	if(type == 19){
 		VDP_setTileMapXY(BG_A, TILE_ATTR_FULL(PAL1, 0, 0, 0, FULL_TILE), x + TILE_OFF_X, y + TILE_OFF_Y);
 		VDP_setTileMapXY(BG_A, TILE_ATTR_FULL(PAL1, 0, 0, 0, FULL_TILE), x + TILE_OFF_X + 1, y + TILE_OFF_Y);
@@ -121,7 +130,7 @@ void spawnBlock(s16 x, s16 y, s16 type, bool dead){
 void updateBlocks(){
 	onLadder = FALSE;
 	for(s16 i = 0; i < BLOCK_CT; i++) if(blocks[i].active && !blocks[i].dead){
-		// if(gameClock % 2 == 1) blockBulletCol(i);
+		// if(gameClock % 4 == blocks[i].trigger) blockBulletCol(i);
 		blocks[i].ladder ? ladderCol(i) : blockPlayerCol(i);
 	}
 }
@@ -153,13 +162,12 @@ void loadRoomTiles(){
 					roomLayout[y][x] == 19 || roomLayout[y][x] == 49) needBlockCancel = TRUE;
 				spawnBlock(x * 2, y * 2, roomLayout[y][x], needBlockCancel);
 			} else {
-				// roomEnemyX = (x + 1) * 2 * 8 + 8;
-				// roomEnemyY = (y + 1) * 2 * 8 + 8;
-				// switch(roomLayout[y][x]){
-				// 	case 20:
-				// 		spawnBoss1(roomEnemyX, roomEnemyY);
-				// 		break;
-				// }
+				roomEnemyX = x * 2 * 8 + 8;
+				roomEnemyY = y * 2 * 8 + 8;
+				switch(roomLayout[y][x]){
+					case 50: weak1(roomEnemyX, roomEnemyY); break;
+					case 51: weak2(roomEnemyX, roomEnemyY); break;
+				}
 			}
 		}
 	}
@@ -223,7 +231,7 @@ void loadOverlay(){
 void loadTiles(){
 	loadOverlay();
 	switch(currentRoomType){
-		case 1: a5(); break;
+		case 1: a2(); break;
 	}
 }
 

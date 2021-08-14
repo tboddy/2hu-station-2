@@ -21,10 +21,13 @@ void spawnEnemy(struct enemySpawner spawner, void(*updater)){
 		enemies[i].pos.x = spawner.x;
 		enemies[i].pos.y = spawner.y;
 		enemies[i].type = spawner.type;
+		enemies[i].health = spawner.health;
 		for(s16 j = 0; j < COUNT_INT; j++){
-			enemies[i].ints[j] = spawner.ints[j] ? spawner.ints[j] : 0;
-			enemies[i].fixes[j] = spawner.fixes[j] ? spawner.fixes[j] : 0;
-			enemies[i].bools[j] = spawner.bools[j] ? TRUE : FALSE;
+			enemies[i].ints[j] = spawner.ints[j];
+			enemies[i].fixes[j] = spawner.fixes[j];
+			enemies[i].bools[j] = spawner.bools[j];
+			enemies[i].vectors[j].x = spawner.vectors[j].x;
+			enemies[i].vectors[j].y = spawner.vectors[j].y;
 		}
 		enemies[i].speed = 0;
 		enemies[i].vel.x = spawner.velocityX ? spawner.velocityX : 0;

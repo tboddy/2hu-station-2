@@ -57,6 +57,8 @@ IMAGE doorBlue "blocks/door-blue.png"
 IMAGE doorGreen "blocks/door-green.png"
 
 IMAGE ladder "blocks/ladder.png"
+IMAGE ladderTop "blocks/laddertop.png"
+IMAGE ladderBottom "blocks/ladderbottom.png"
 
 SPRITE chimata "player/chimata.png" 4 6 FAST 0
 
